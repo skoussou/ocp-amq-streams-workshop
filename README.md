@@ -1,8 +1,0 @@
-= AMQ Streams (KAFKA) on OCP Workshop
-
-Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
-:toc:
-
-== Section 1
-
-== Section 2
