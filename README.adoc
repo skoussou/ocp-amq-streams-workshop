@@ -45,18 +45,20 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** strimzi/kafka-mirror-maker:latest
 ** strimzi/kafka-mirror-maker:latest
 
-== Installation Workshop Activities
+== Workshop Activities
+
+=== Installation Workshop Activities
 
 * So if you have a centralized cluster operator, ????
 
 
-== Configuration Workshop Activities
+=== Configuration Workshop Activities
 
 * Scenario: Central Cluster Operator to Watch multiple Namespaces for Topic Creation
 ** Configs: https://strimzi.io/docs/master/#deploying-cluster-operator-kubernetes-to-watch-multiple-namespacesstr
 
 
-== Self-Service Dev-Team Activities 
+=== Self-Service Dev-Team Activities 
 
 * Add new Topic
 ** Scenario:  team that wants to add a topic probably wants to do that in a new namespace (e.g. the namespaces associated with their app which they control), but for this to work, the cluster operator needs to be modified with the namespace to watch, as well as new role bindings installed in that namespace. 
