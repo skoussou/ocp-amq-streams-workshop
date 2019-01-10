@@ -1,11 +1,12 @@
 = AMQ Streams (KAFKA) on OCP  - Self-Service Dev-Team Activities 
 Steps to configure AMQ Streams 1.x on OCP 3.9+
-
 :toc:
 
 
 == Use Case: Add new Topic
 
-== Scenario 1:  team that wants to add a topic probably wants to do that in a new namespace (e.g. the namespaces associated with their app which they control), but for this to work, the cluster operator needs to be modified with the namespace to watch, as well as new role bindings installed in that namespace. 
+== Scenario 1: Add Topic on separate namespace
+
+Description: Team that wants to add a topic probably wants to do that in a new namespace (e.g. the namespaces associated with their app which they control), but for this to work, the cluster operator needs to be modified with the namespace to watch, as well as new role bindings installed in that namespace. 
 *** Pre-Reqs: Namespace is watched by central Cluster Operator or has one in the same namespace
 ***

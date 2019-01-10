@@ -1,10 +1,8 @@
 = AMQ Streams (KAFKA) on OCP  - Configuration Workshop Activities
 Steps to configure AMQ Streams 1.x on OCP 3.9+
-
 :toc:
 
 
-Considerations: * So if you have a centralized cluster operator, ????
 
 == Scenarion 1: Configure Cluster Operator in a central fashion to Watch multiple Namespaces for Topic Creation
 

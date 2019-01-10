@@ -1,6 +1,5 @@
 = AMQ Streams (KAFKA) on OCP  - Installation Workshop Activities
 Steps to install AMQ Streams 1.x on OCP 3.9+
-
 :toc:
 
 
