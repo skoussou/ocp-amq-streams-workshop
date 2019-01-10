@@ -2,6 +2,65 @@
 Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 :toc:
 
-== Section 1
 
-== Section 2
+== Scope
+
+* Installation and overall view of Kafka on OCP
+* Management tools included in AMQ streams in order to 
+** create, 
+** read, 
+** update
+** delete topic in kafka (via UI or command line tool)
+* How to manage AMQ Streams (KAFKA) cluster
+* overall view of monitoring tool included in AMQ streams
+* security (kerberos, oauth2).
+* Architecture choices (single central cluster, collaborating projects, topic discovery, etc.)
+
+== Kafka Key Features
+
+* Scalability and performance
+** Designed for horizontal scalability 
+
+* Message ordering guarantee
+** At partition level 
+
+* Message rewind/replay
+** "Long term" storage
+** Allows to reconstruct application state by replaying the messages
+** Combined with compacted topics allows to use Kafka as key-value store 
+
+== Environment Pre-Requisites
+* Storage Available
+* Cluster Topology/Networking
+* ImageStreams/Images in cluster
+* Security/Auhorization
+
+== Tools Pre-requisites
+* oc tools
+* Download link:https://access.redhat.com/node/3596931/423/1[install_and_examples.zip]
+* Add to OCP Cluster Registry the following images
+** registry.access.redhat.com/amqstreams-1/amqstreams10-clusteroperator-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-useroperator-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-topicoperator-openshift:1.0.0
+** strimzi/kafka-mirror-maker:latest
+** strimzi/kafka-mirror-maker:latest
+
+== Installation Workshop Activities
+
+* So if you have a centralized cluster operator, ????
+
+
+== Configuration Workshop Activities
+
+* Scenario: Central Cluster Operator to Watch multiple Namespaces for Topic Creation
+** Configs: https://strimzi.io/docs/master/#deploying-cluster-operator-kubernetes-to-watch-multiple-namespacesstr
+
+
+== Self-Service Dev-Team Activities 
+
+* Add new Topic
+** Scenario:  team that wants to add a topic probably wants to do that in a new namespace (e.g. the namespaces associated with their app which they control), but for this to work, the cluster operator needs to be modified with the namespace to watch, as well as new role bindings installed in that namespace. 
+*** Pre-Reqs: Namespace is watched by central Cluster Operator or has one in the same namespace
+***
+
+
