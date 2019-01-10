@@ -1,0 +1,15 @@
+= AMQ Streams (KAFKA) on OCP  - Installation Workshop Activities
+Steps to install AMQ Streams 1.x on OCP 3.9+
+
+:toc:
+
+
+Considerations: * So if you have a centralized cluster operator, ????
+
+== Setup Resources
+
+== Install Cluster Operator
+
+== Install KAFKA Cluster
+
+== Install KAFKA Connecto Cluster

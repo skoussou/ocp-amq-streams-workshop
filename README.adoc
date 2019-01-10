@@ -16,19 +16,6 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * security (kerberos, oauth2).
 * Architecture choices (single central cluster, collaborating projects, topic discovery, etc.)
 
-== Kafka Key Features
-
-* Scalability and performance
-** Designed for horizontal scalability 
-
-* Message ordering guarantee
-** At partition level 
-
-* Message rewind/replay
-** "Long term" storage
-** Allows to reconstruct application state by replaying the messages
-** Combined with compacted topics allows to use Kafka as key-value store 
-
 == Environment Pre-Requisites
 * Storage Available
 * Cluster Topology/Networking
@@ -45,24 +32,38 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** strimzi/kafka-mirror-maker:latest
 ** strimzi/kafka-mirror-maker:latest
 
+== AMQ Streams on OCP Components & Features
+
+== Kafka Key Features
+
+* Scalability and performance
+** Designed for horizontal scalability 
+
+* Message ordering guarantee
+** At partition level 
+
+* Message rewind/replay
+** "Long term" storage
+** Allows to reconstruct application state by replaying the messages
+** Combined with compacted topics allows to use Kafka as key-value store 
+
+== AMQ Streams Components
+
+* Cluster Operator: Responsible for deploying and managing Apache Kafka clusters within OpenShift cluster. 
+** Cluster Operator watches the following resources:
+*** A *Kafka* resource for the Kafka cluster.
+*** A *KafkaConnect* resource for the Kafka Connect cluster.
+*** A *KafkaConnectS2I* resource for the Kafka Connect cluster with Source2Image support. 
+** To deploy a Kafka cluster, a *Kafka resource* with the cluster configuration has to be created within the OpenShift cluster. Based on what is declared inside of the Kafka resource, the Cluster Operator deploys a corresponding Kafka cluste
+* Topic Operator: Responsible for managing Kafka topics within a Kafka cluster running within OpenShift cluster. 
+* User Operator: Responsible for managing Kafka users within a Kafka cluster running within OpenShift cluster. 
+
+
 == Workshop Activities
 
-=== Installation Workshop Activities
+* link:README-amq-streams-ocp-install.adoc[Installation Workshop Activities]
+* link:README-amq-streams-ocp-configure.adoc[Configuration Workshop Activities]
+* link:README-amq-streams-ocp-workwithcluster.adoc[Self-Service Dev-Team Workshop Activities ]
 
-* So if you have a centralized cluster operator, ????
-
-
-=== Configuration Workshop Activities
-
-* Scenario: Central Cluster Operator to Watch multiple Namespaces for Topic Creation
-** Configs: https://strimzi.io/docs/master/#deploying-cluster-operator-kubernetes-to-watch-multiple-namespacesstr
-
-
-=== Self-Service Dev-Team Activities 
-
-* Add new Topic
-** Scenario:  team that wants to add a topic probably wants to do that in a new namespace (e.g. the namespaces associated with their app which they control), but for this to work, the cluster operator needs to be modified with the namespace to watch, as well as new role bindings installed in that namespace. 
-*** Pre-Reqs: Namespace is watched by central Cluster Operator or has one in the same namespace
-***
 
 
