@@ -34,7 +34,7 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 
 == AMQ Streams on OCP Components & Features
 
-== Kafka Key Features
+=== Kafka Key Features
 
 * Scalability and performance
 ** Designed for horizontal scalability 
@@ -47,7 +47,7 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** Allows to reconstruct application state by replaying the messages
 ** Combined with compacted topics allows to use Kafka as key-value store 
 
-== AMQ Streams Components
+=== AMQ Streams Components
 
 * Cluster Operator: Responsible for deploying and managing Apache Kafka clusters within OpenShift cluster. 
 ** Cluster Operator watches the following resources:
