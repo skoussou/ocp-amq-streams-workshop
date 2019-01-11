@@ -15,9 +15,10 @@ Considerations: * So if you have a centralized cluster operator, ????
 
 * Step 2: Get the latest version of AMQ Streams CRDs
 ** Either Download the latest CRDs link:https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams[AMQ Streams ]
-** [Select] The availble CRDs from this repository link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[install_and_examples_0]
+** *[Selected]* The availble CRDs from this repository link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[install_and_examples_0]
 
 * Step 3: Install the CRD (CustomResourceDefinition) objects for AMQ Streams
+
 	cd install_and_examples_0
 	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install/cluster-operator/*RoleBinding*.yaml
 	oc apply -f install/cluster-operator/
