@@ -22,6 +22,9 @@ Considerations: * So if you have a centralized cluster operator, ????
 	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install/cluster-operator/*RoleBinding*.yaml
 	oc apply -f install/cluster-operator/
 
+** link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-list-of-kafka-cluster-resources-deployment-configuration-kafka[List of resources created as part of Kafka cluster]
+
+
 === Install AMQ Streams
 
 * Step 1: Install *KAFKA* object
@@ -74,6 +77,11 @@ Considerations: * So if you have a centralized cluster operator, ????
 *** link:https://blog.openshift.com/introducing-the-operator-framework/[Introducing the Operator Framework: Building Apps on Kubernetes]
 *** link:https://coreos.com/operators/[]
 *** link:https://blog.openshift.com/make-a-kubernetes-operator-in-15-minutes-with-helm/[Make a Kubernetes Operator in 15 minutes with Helm]
+
+* Resulting Object Resources Deployment
+** *cluster-name-kafka* - StatefulSet which is in charge of managing the Kafka broker pods. 
+** *cluster-name-zookeeper-nodes* - Secret with Zookeeper node keys. 
+** *cluster-name-entity-operator* - Deployment with Topic and User Operators. This resource will be created only if Cluster Operator deployed Entity Operator and will monitor to deploy User and Topics
 
 
 === Configure Topic
