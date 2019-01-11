@@ -5,16 +5,114 @@ Steps to install AMQ Streams 1.x on OCP 3.9+
 
 Considerations: * So if you have a centralized cluster operator, ????
 
+== Ephemeral AQM Streams Installation
+=== Setup Resources for Ephemeral AQM Streams Installation
+
+* Step 1: Create a new Namespece
+
+	oc new-project amq-streams-ephemeral
+	oc login -u system:admin
+
+* Step 2: Get the latest version of AMQ Streams CRDs
+** Either Download the latest CRDs link:https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams[AMQ Streams ]
+** [Select] The availble CRDs from this repository link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[install_and_examples_0]
+
+* Step 3: Install the CRD (CustomResourceDefinition) objects for AMQ Streams
+	cd install_and_examples_0
+	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install/cluster-operator/*RoleBinding*.yaml
+	oc apply -f install/cluster-operator/
+
+=== Install AMQ Streams
+
+* Step 1: Install *KAFKA* object
+	cd install_and_examples_0
+	oc create -f examples/kafka/kafka-ephemeral.yaml
+
+** The *OCP Operators* monitors for certain objects and takes action 
+	grep -r kafka.strimzi.io
+	cluster-operator/041-Crd-kafkaconnect.yaml:  name: kafkaconnects.kafka.strimzi.io
+	cluster-operator/041-Crd-kafkaconnect.yaml:  group: kafka.strimzi.io
+	cluster-operator/040-Crd-kafka.yaml:  name: kafkas.kafka.strimzi.io
+	cluster-operator/040-Crd-kafka.yaml:  group: kafka.strimzi.io
+	cluster-operator/042-Crd-kafkaconnects2i.yaml:  name: kafkaconnects2is.kafka.strimzi.io
+	cluster-operator/042-Crd-kafkaconnects2i.yaml:  group: kafka.strimzi.io
+	cluster-operator/043-Crd-kafkatopic.yaml:  name: kafkatopics.kafka.strimzi.io
+	cluster-operator/043-Crd-kafkatopic.yaml:  group: kafka.strimzi.io
+	cluster-operator/031-ClusterRole-strimzi-entity-operator.yaml:  - kafka.strimzi.io
+	cluster-operator/031-ClusterRole-strimzi-entity-operator.yaml:  - kafka.strimzi.io
+	cluster-operator/045-Crd-kafkamirrormaker.yaml:  name: kafkamirrormakers.kafka.strimzi.io
+	cluster-operator/045-Crd-kafkamirrormaker.yaml:  group: kafka.strimzi.io
+	cluster-operator/020-ClusterRole-strimzi-cluster-operator-role.yaml:  - kafka.strimzi.io
+	cluster-operator/032-ClusterRole-strimzi-topic-operator.yaml:  - kafka.strimzi.io
+	cluster-operator/044-Crd-kafkauser.yaml:  name: kafkausers.kafka.strimzi.io
+	cluster-operator/044-Crd-kafkauser.yaml:  group: kafka.strimzi.io
+	user-operator/02-Role-strimzi-user-operator.yaml:  - "kafka.strimzi.io"
+	user-operator/04-Crd-kafkauser.yaml:  name: kafkausers.kafka.strimzi.io
+	user-operator/04-Crd-kafkauser.yaml:  group: kafka.strimzi.io
+	topic-operator/02-Role-strimzi-topic-operator.yaml:  - "kafka.strimzi.io"
+	topic-operator/04-Crd-kafkatopic.yaml:  name: kafkatopics.kafka.strimzi.io
+	topic-operator/04-Crd-kafkatopic.yaml:  group: kafka.strimzi.io
+
+** *_Cluster Operator_* (defined and installed earlier with link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml[install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml]) monitors for
+	...
+	spec:
+	  group: kafka.strimzi.io
+	  version: v1alpha1
+	  scope: Namespaced
+	  names:
+	    kind: Kafka
+	    listKind: KafkaList
+	    singular: kafka
+	    plural: kafkas
+	...
+
+** link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0/examples/kafka/kafka-ephemeral.yaml[install_and_examples_0/examples/kafka/kafka-ephemeral.yaml] creates
+	apiVersion: kafka.strimzi.io/v1alpha1
+	kind: Kafka
+
+** *_Cluster Operator_* reacts and installs the KAFKA, zookeeper
+*** link:https://blog.openshift.com/introducing-the-operator-framework/[Introducing the Operator Framework: Building Apps on Kubernetes]
+*** link:https://coreos.com/operators/[]
+*** link:https://blog.openshift.com/make-a-kubernetes-operator-in-15-minutes-with-helm/[Make a Kubernetes Operator in 15 minutes with Helm]
+
+
+=== Configure Topic
+
+    Now that KAFKA cluster is running, create a topic to publish and subscribe from external client. Create the following *my-topic* Topic custom resource definition with 3 replicas and 3 partitions in my-cluster Kafka cluster:
+
+echo 'apiVersion: kafka.strimzi.io/v1alpha1
+	kind: KafkaTopic
+	metadata:
+	 name: my-topic
+	 labels:
+	   strimzi.io/cluster: "my-cluster"
+	spec:
+	 partitions: 3
+	 replicas: 3
+	 config:
+	   retention.ms: 7200000
+	   segment.bytes: 1073741824
+	EOF | ' | oc create -f - -n amq-streams-ephemeral
+
+
+
+
+
+
 == Setup Resources
 
-* Step 1: Create Cluster Operator Namespece
+* Step 1: Create a Central Cluster Operator Namespece
 
-	oc new-project amq-streams-ops
+	oc project amq-streams-ops
 
 * Step 2:  Modify the installation files according to the namespace the Cluster Operator is going to be installed in.
 
+	Either Download the latest C
+
 	cd /home/stkousso/Stelios/sw11/KAFKA-AMQStreams/Distros/AMQ-Streams/1.0.0/install_and_examples_0/install
 	sed -i 's/namespace: .*/namespace: amq-streams-ops/' install/cluster-operator/*RoleBinding*.yaml
+
+
 
 
 

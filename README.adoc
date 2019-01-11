@@ -65,6 +65,15 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 
 	minishift profile set amq-streams-workshop
 
+	$ minishift profile list
+	- amq-streams-workshop	Does Not Exist	(Active)
+	- minishift		Stopped
+
+	minishift config set cpus 2
+	minishift config set memory 6144
+	minishift addons disable anyuid
+
+	minishift start
 
 == Workshop Activities
 
