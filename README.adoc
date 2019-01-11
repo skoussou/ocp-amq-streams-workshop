@@ -21,6 +21,7 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * Cluster Topology/Networking
 * ImageStreams/Images in cluster
 * Security/Auhorization
+**  A user with cluster-admin role needs to be used, for example, system:admin. 
 
 == Tools Pre-requisites
 * oc tools
@@ -58,6 +59,12 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * Topic Operator: Responsible for managing Kafka topics within a Kafka cluster running within OpenShift cluster. 
 * User Operator: Responsible for managing Kafka users within a Kafka cluster running within OpenShift cluster. 
 
+== Create Enironment
+
+=== Minishift
+
+	minishift profile set amq-streams-workshop
+
 
 == Workshop Activities
 
@@ -65,5 +72,13 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * link:README-amq-streams-ocp-configure.adoc[Configuration Workshop Activities]
 * link:README-amq-streams-ocp-workwithcluster.adoc[Self-Service Dev-Team Workshop Activities ]
 
+
+== Additional Resources
+
+From  RHTE Tom and Jakub set up some material on GitHub like this one https://github.com/tombentley/rhte-2018 and https://github.com/scholzj/rhte-prague-2018
+
+Jakub should also have a repo with demo for the support internal training
+
+there is also this one from me for the RHOSD https://github.com/ppatierno/rh-osd-2018
 
 

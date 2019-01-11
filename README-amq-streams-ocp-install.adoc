@@ -7,8 +7,133 @@ Considerations: * So if you have a centralized cluster operator, ????
 
 == Setup Resources
 
+* Step 1: Create Cluster Operator Namespece
+
+	oc new-project amq-streams-ops
+
+* Step 2:  Modify the installation files according to the namespace the Cluster Operator is going to be installed in.
+
+	cd /home/stkousso/Stelios/sw11/KAFKA-AMQStreams/Distros/AMQ-Streams/1.0.0/install_and_examples_0/install
+	sed -i 's/namespace: .*/namespace: amq-streams-ops/' install/cluster-operator/*RoleBinding*.yaml
+
+
+
 == Install Cluster Operator
+
+2.2. Cluster Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#cluster-operator-str
+4.1. Cluster Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-operators-cluster-operator-str
+
+* Step 1: Deploy the Cluster Operator
+
+    cd /home/stkousso/Stelios/sw11/KAFKA-AMQStreams/Distros/AMQ-Streams/1.0.0/install_and_examples_0/
+    oc apply -f install/cluster-operator -n _my-project_
+    oc apply -f examples/templates/cluster-operator -n amq-streams-ops
 
 == Install KAFKA Cluster
 
-== Install KAFKA Connecto Cluster
+
+* Step 1: Deploying a persistent Kafka cluster to OpenShift
+
+	cd /home/stkousso/Stelios/sw11/KAFKA-AMQStreams/Distros/AMQ-Streams/1.0.0/install_and_examples_0/
+	oc apply -f examples/kafka/kafka-persistent.yaml
+
+
+== Install KAFKA Connect Cluster
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#kafka-connect-str
+
+
+== Install KAFKA MirrorMaker Cluster
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#kafka-mirror-maker-str
+
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#deploying-the-topic-operator-using-the-cluster-operator-str
+
+
+
+== Install Topic Operator
+
+2.7. Topic Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-getting-started-topic-operator-str
+4.2. Topic Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#deploying-the-topic-operator-str
+5. Using the Topic Operator	https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#using-the-topic-operator-str
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#deploying-the-topic-operator-using-the-cluster-operator-str
+
+Configure it
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#type-EntityTopicOperatorSpec-reference
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-kafka-entity-operator-deployment-configuration-kafka
+
+
+== Install User Operator
+
+
+2.8. User Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#proc-deploying-the-user-operator-using-the-cluster-operator-str
+4.3. User Operator		https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-user-operator-str
+6. Using the User Operator	https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-using-the-user-operator-str
+
+== Configure & Deploy KAFKA Cluster
+
+https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-deployment-configuration-kafka-str
+    3.1.1. Kafka and Zookeeper storage
+    3.1.2. Replicas
+    3.1.3. Kafka broker configuration
+    3.1.4. Kafka broker listeners
+    3.1.5. Authentication and Authorization
+    3.1.6. Replicas
+    3.1.7. Zookeeper configuration
+    3.1.8. Entity Operator
+    3.1.9. CPU and memory resources
+    3.1.10. Logging
+    3.1.11. Kafka rack awareness
+    3.1.12. Healthchecks
+    3.1.13. Prometheus metrics
+    3.1.14. JVM Options
+    3.1.15. Container images
+    3.1.16. TLS sidecar
+    3.1.17. Configuring pod scheduling
+    3.1.18. Performing a rolling update of a Kafka cluster
+    3.1.19. Performing a rolling update of a Zookeeper cluster
+    3.1.20. Scaling clusters
+    3.1.21. Deleting Kafka nodes manually
+    3.1.22. Deleting Zookeeper nodes manually
+    3.1.23. List of resources created as part of Kafka cluster
+
+
+
+== Configure & Deploy KAFKA Connect Cluster
+
+3.2. Kafka Connect cluster configuration
+3.3. Kafka Connect cluster with Source2Image support
+
+
+== Configure & Deploy KAFKA Mirror Maker 
+
+3.4. Kafka Mirror Maker configuration
+
+== Configure KAFKA Component Security
+
+7. Security	https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#security-str
+
+
+
+
+== Testing
+
+== Deploy on OCP Clients
+
+Deploying example clients: https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#deploying-example-clients-str
+
+
+== Outside OCP Clients
+
+https://developers.redhat.com/blog/2018/10/29/how-to-run-kafka-on-openshift-the-enterprise-kubernetes-with-amq-streams/
+
+
+
+
+
+
+
+
