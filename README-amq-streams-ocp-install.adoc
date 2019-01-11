@@ -58,7 +58,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	topic-operator/04-Crd-kafkatopic.yaml:  name: kafkatopics.kafka.strimzi.io
 	topic-operator/04-Crd-kafkatopic.yaml:  group: kafka.strimzi.io
 
-** *_Cluster Operator_* (defined and installed earlier with link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml[install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml]) monitors for
+** *_Cluster Operator_* (defined and installed earlier with link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0/install/cluster-operator/040-Crd-kafka.yaml[install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml]) monitors for
 	...
 	spec:
 	  group: kafka.strimzi.io
