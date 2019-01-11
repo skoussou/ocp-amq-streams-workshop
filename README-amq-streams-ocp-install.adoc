@@ -23,7 +23,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install/cluster-operator/*RoleBinding*.yaml
 	oc apply -f install/cluster-operator/
 
-** link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-list-of-kafka-cluster-resources-deployment-configuration-kafka[List of resources created as part of Kafka cluster]
+** See here: link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-list-of-kafka-cluster-resources-deployment-configuration-kafka[List of resources created as part of Kafka cluster] in the namespace
 
 
 === Install AMQ Streams
@@ -33,6 +33,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	oc create -f examples/kafka/kafka-ephemeral.yaml
 
 ** The *OCP Operators* monitors for certain objects and takes action 
+
 	grep -r kafka.strimzi.io
 	cluster-operator/041-Crd-kafkaconnect.yaml:  name: kafkaconnects.kafka.strimzi.io
 	cluster-operator/041-Crd-kafkaconnect.yaml:  group: kafka.strimzi.io
