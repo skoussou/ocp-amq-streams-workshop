@@ -34,6 +34,8 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * Ensure imagestreams are installed in *openshift* namespace
 ** clone https://github.com/openshift/library
 ** Run a script to install *official* imagestreams in *openshift* namespace such as this link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/scripts/install-official-is-imagestreams.sh[install-official-is-imagestreams.sh] as cluster admin
+** To avoid minishift issues with registry authentication download 3.10 images:https://github.com/minishift/minishift/blob/master/addons/xpaas/v3.10/xpaas-streams/fis-image-streams.json
+** Image to be present registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:2.0
 
 == AMQ Streams on OCP Components & Features
 

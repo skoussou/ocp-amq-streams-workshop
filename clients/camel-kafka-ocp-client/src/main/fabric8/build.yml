@@ -1,0 +1,39 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: camel-kafka-demo
+    group: com.redhat
+    provider: fabric8
+    version: 1.0.0-SNAPSHOT
+  name: camel-kafka-demo-s2i
+  namespace: amq-streams-ephemeral
+  resourceVersion: '117228'
+  selfLink: >-
+    /apis/build.openshift.io/v1/namespaces/amq-streams-ephemeral/buildconfigs/camel-kafka-demo-s2i
+  uid: ae6710b4-17f9-11e9-93a8-525400048a09
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'camel-kafka-demo:latest'
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    binary: {}
+    type: Binary
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'fis-java-openshift:2.0'
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers: []
+status:
+  lastVersion: 1
+
