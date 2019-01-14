@@ -58,7 +58,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	topic-operator/04-Crd-kafkatopic.yaml:  name: kafkatopics.kafka.strimzi.io
 	topic-operator/04-Crd-kafkatopic.yaml:  group: kafka.strimzi.io
 
-** *_Cluster Operator_* (defined and installed earlier with link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0/install/cluster-operator/040-Crd-kafka.yaml[install_and_examples_0[/install/cluster-operator/040-Crd-kafka.yaml]) monitors for
+** *_Cluster Operator_* (defined and installed earlier with link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0/install/cluster-operator/040-Crd-kafka.yaml[install_and_examples_0/install/cluster-operator/040-Crd-kafka.yaml]) monitors for
 
 	...
 	spec:
@@ -77,7 +77,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	apiVersion: kafka.strimzi.io/v1alpha1
 	kind: Kafka
 
-** *_Cluster Operator_* reacts and installs the KAFKA, zookeeper
+** *_Cluster Operator_* reacts and installs the KAFKA cluster with 3 replicas, zookeeper cluster with 3 replicas
 *** link:https://blog.openshift.com/introducing-the-operator-framework/[Introducing the Operator Framework: Building Apps on Kubernetes]
 *** link:https://coreos.com/operators/[]
 *** link:https://blog.openshift.com/make-a-kubernetes-operator-in-15-minutes-with-helm/[Make a Kubernetes Operator in 15 minutes with Helm]
@@ -86,6 +86,71 @@ Considerations: * So if you have a centralized cluster operator, ????
 ** *cluster-name-kafka* - StatefulSet which is in charge of managing the Kafka broker pods. 
 ** *cluster-name-zookeeper-nodes* - Secret with Zookeeper node keys. 
 ** *cluster-name-entity-operator* - Deployment with Topic and User Operators. This resource will be created only if Cluster Operator deployed Entity Operator and will monitor to deploy User and Topics
+
+	$ oc get all
+	NAME                                DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+	deploy/my-cluster-entity-operator   1         1         1            1           37m
+	deploy/strimzi-cluster-operator     1         1         1            1           44m
+
+	NAME                                       DESIRED   CURRENT   READY     AGE
+	rs/my-cluster-entity-operator-686f6db58d   1         1         1         37m
+	rs/strimzi-cluster-operator-696658566      1         1         1         44m
+
+	NAME                                DESIRED   CURRENT   AGE
+	statefulsets/my-cluster-kafka       3         3         39m
+	statefulsets/my-cluster-zookeeper   3         3         41m
+
+	NAME                                             READY     STATUS    RESTARTS   AGE
+	po/my-cluster-entity-operator-686f6db58d-tzggx   3/3       Running   1          37m
+	po/my-cluster-kafka-0                            2/2       Running   1          39m
+	po/my-cluster-kafka-1                            2/2       Running   1          39m
+	po/my-cluster-kafka-2                            2/2       Running   1          39m
+	po/my-cluster-zookeeper-0                        2/2       Running   0          41m
+	po/my-cluster-zookeeper-1                        2/2       Running   0          41m
+	po/my-cluster-zookeeper-2                        2/2       Running   0          41m
+	po/strimzi-cluster-operator-696658566-b9v5r      1/1       Running   0          44m
+
+	NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+	svc/my-cluster-kafka-bootstrap    ClusterIP   172.30.190.224   <none>        9091/TCP,9092/TCP,9093/TCP   39m
+	svc/my-cluster-kafka-brokers      ClusterIP   None             <none>        9091/TCP,9092/TCP,9093/TCP   39m
+	svc/my-cluster-zookeeper-client   ClusterIP   172.30.250.70    <none>        2181/TCP                     41m
+	svc/my-cluster-zookeeper-nodes    ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   41m
+
+	[stkousso@stkousso ocp-amq-streams-workshop]$ oc get cm
+	NAME                                      DATA      AGE
+	my-cluster-entity-topic-operator-config   1         38m
+	my-cluster-entity-user-operator-config    1         38m
+	my-cluster-kafka-config                   1         39m
+	my-cluster-zookeeper-config               1         41m
+
+* Step 2: Expose KAFKA bootstrap servers to external, to OCP, clients
+** Note the difference between KAFKA properties *brokers.list* and *bootstrap.serers* (see link:https://jaceklaskowski.gitbooks.io/apache-kafka/kafka-properties-bootstrap-servers.html[description here] is that the latter although can be a list of hosts:port a single one can be provided and the others will be discovered. In 
+the examples we will use this method and hence we expose a single route of the service
+
+	svc/my-cluster-kafka-bootstrap    ClusterIP   172.30.190.224   <none>        9091/TCP,9092/TCP,9093/TCP   39m
+
+** expose service as follows
+
+	oc expose service my-cluster-kafka-bootstrap
+
+	$ oc describe route my-cluster-kafka-bootstrap 
+	Name:			my-cluster-kafka-bootstrap
+	Namespace:		amq-streams-ephemeral
+	Created:		9 minutes ago
+	Labels:			strimzi.io/cluster=my-cluster
+				strimzi.io/kind=Kafka
+				strimzi.io/name=my-cluster-kafka-bootstrap
+	Annotations:		openshift.io/host.generated=true
+	Requested Host:		my-cluster-kafka-bootstrap-amq-streams-ephemeral.192.168.42.249.nip.io
+				  exposed on router router 9 minutes ago
+	Path:			<none>
+	TLS Termination:	<none>
+	Insecure Policy:	<none>
+	Endpoint Port:		replication
+
+	Service:	my-cluster-kafka-bootstrap
+	Weight:		100 (100%)
+	Endpoints:	172.17.0.11:9092, 172.17.0.12:9092, 172.17.0.13:9092 + 6 more...
 
 
 === Configure Topic
@@ -103,10 +168,33 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	 replicas: 3
 	 config:
 	   retention.ms: 7200000
-	   segment.bytes: 1073741824
-	EOF | ' | oc create -f - -n amq-streams-ephemeral
+	   segment.bytes: 1073741824' | oc create -f - -n amq-streams-ephemeral
 
 
+
+=== Test 
+
+Test using an external application
+
+    Clone this git repo to test the access from to your new Kafka cluster:
+
+$ git clone https://github.com/hguerrero/amq-examples.git
+
+    Switch to the camel-kafka-demo folder
+
+$ cd amq-examples/camel-kafka-demo/
+
+    As we are using Routes for external access to the cluster, we need the CA certs to enable TLS in the client. Extract the public certificate of the broker certification authority
+
+$ oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt --to=- > src/main/resources/ca.crt
+
+    Import the trusted cert to a keystore
+
+$ keytool -import -trustcacerts -alias root -file src/main/resources/ca.crt -keystore src/main/resources/keystore.jks -storepass password -noprompt
+
+    Now you can run the Fuse application using the maven command:
+
+$ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'`:443" clean package spring-boot:run
 
 
 
