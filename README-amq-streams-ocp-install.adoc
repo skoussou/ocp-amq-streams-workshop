@@ -174,7 +174,7 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 === Test 
 
-Test using an external application
+==== Testing using an external application
 
     Clone this git repo to test the access from to your new Kafka cluster:
 
@@ -196,6 +196,11 @@ $ keytool -import -trustcacerts -alias root -file src/main/resources/ca.crt -key
 
 $ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'`:443" clean package spring-boot:run
 
+
+
+==== Testing using an OCP microservice application
+
+* Step 1: Ensure the 
 
 
 
