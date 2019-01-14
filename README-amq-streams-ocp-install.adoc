@@ -190,7 +190,7 @@ $ oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt --to=- > src/main/r
 
     Import the trusted cert to a keystore
 
-$ keytool -import -trustcacerts -alias root -file src/main/resources/ca.crt -keystore src/main/resources/keystore.jks -storepass password -noprompt
+$ keytool -import -trustcacerts -alias root -file src/main/resourcclients/camel-kafka-ocp-client/src/main/fabric8/build.ymles/ca.crt -keystore src/main/resources/keystore.jks -storepass password -noprompt
 
     Now you can run the Fuse application using the maven command:
 
@@ -200,7 +200,23 @@ $ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-boo
 
 ==== Testing using an OCP microservice application
 
-* Step 1: Ensure the 
+* Step 1: Ensure the pre-reqs have been fullfilled and image *registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:2.0* is in *openshift* namespace
+* Step 2: Ensure cluster exists and 
+** *my-topic* configured
+** name of cluster is *my-cluster*
+** service *my-cluster-kafka-bootstrap.amq-streams-ephemeral.svc* (exposing 9092) exists
+* Step 3: install binary build
+
+	oc login -u HOST user:password
+        cd clients/camel-kafka-ocp-client
+	oc create -f src/main/fabric8/build.yml
+        mvn clean package
+	oc start-build camel-kafka-demo-s2i --from-file=target/camel-kafka-demo-1.0.0-SNAPSHOT.jar
+
+* Step 4: 
+
+	oc get pods
+	oc logs -f camel-kafka-demo-
 
 
 
