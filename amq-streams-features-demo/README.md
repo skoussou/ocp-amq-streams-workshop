@@ -51,8 +51,8 @@ Kafka allows many parts of a broker to be customised.
 In order to allow users the ability to customise their Kafka cluster within OpenShift in the same way whilst at same time and in order for the operator to make running the cluster easy for users, the operator needs ownership of some of the Kafka configurables. 
 For example, to make TLS work the operators needs to use some of the SSL-related configurables. 
 So there's a list of options which the operator takes charge of and which users are forbidden from setting themselves. See:
-* Kafka cluster configuration link:https://strimzi.io/docs/0.9.0/#assembly-deployment-configuration-kafka-str[documentation] 
-* Cluster Operator configuration link:https://strimzi.io/docs/0.9.0/#ref-operators-cluster-operator-configuration-deploying-co[documentation] 
+* Kafka cluster configuration [documentation](https://strimzi.io/docs/0.9.0/#assembly-deployment-configuration-kafka-str) 
+* Cluster Operator configuration [documentation](https://strimzi.io/docs/0.9.0/#ref-operators-cluster-operator-configuration-deploying-co)
 
 All the rest of the configs can be specified by the user. For example:
 
