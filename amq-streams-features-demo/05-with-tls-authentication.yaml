@@ -1,0 +1,29 @@
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: Kafka
+metadata:
+  name: my-cluster
+  labels:
+    app: tech-exchange-kafka
+spec:
+  kafka:
+    replicas: 1
+    listeners:
+      tls:
+        authentication: 
+          type: tls
+    authorization:
+      type: simple
+    storage:
+      type: persistent-claim
+      size: 1Gi
+    config:
+      # new log segment every day
+      log.roll.hours: 24
+      # keep log segments 4 days
+      log.retention.hours: 94
+  zookeeper:
+    replicas: 1
+    storage:
+      type: persistent-claim
+      size: 1Gi
+
