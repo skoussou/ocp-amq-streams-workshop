@@ -157,6 +157,7 @@ the examples we will use this method and hence we expose a single route of the s
 
 Now that KAFKA cluster is running, create a topic to publish and subscribe from external client. Create the following *my-topic* Topic custom resource definition with 3 replicas and 3 partitions in my-cluster Kafka cluster:
 
+* See link:README-amq-streams-ocp-configure.adoc[Configuration Workshop Activities] for additional Topic Creation/Configuration methods
 * Create it by creating *KafkaTopic* CRD object
 
 echo 'apiVersion: kafka.strimzi.io/v1alpha1
@@ -172,12 +173,6 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	   retention.ms: 7200000
 	   segment.bytes: 1073741824' | oc create -f - -n amq-streams-ephemeral
 
-* Adding Topic via Template configuring Topic *ConfigMap* and *directly on zookeeper* 2 more option
-
-    • Create topic through Kafka
-oc exec my-cluster-kafka-1 -i -t -- bin/kafka-topics.sh --zookeeper my-cluster-zookeeper:2181 --create --topic created-in-kafka --partitions 3 --replication-factor 1 --config cleanup.policy=compact
-    • Create topic through Config Map
-oc apply -f demo-7/topic.yaml
 
 
 
@@ -188,7 +183,7 @@ oc apply -f demo-7/topic.yaml
 * Ensure a route exists to the OCP Service *my-cluster-kafka-brokers*. Otherwise expose via TLS the service (console or oc tools)
 * Go to client application https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/clients/kafka-remote-client[kafka-remote-client]
 
-	cd ./ocp-amq-streams-workshop/tree/master/clients/kafka-remote-client
+	cd ./ocp-amq-streams-workshop/clients/kafka-remote-client
 
 * As we are using Routes for external access to the cluster, we need the CA certs to enable TLS in the client. Extract the public certificate of the broker certification authority
 
