@@ -84,6 +84,12 @@ via Template configuring Topic *ConfigMap* and *directly on zookeeper* 2 more op
 
 
 
+oc exec my-cluster-zookeeper-0 -i -t -- bin/kafka-consumer-groups.sh --zookeeper localhost:21810 --describe
+
+ --bootstrap-server localhost:9092 --list
+
+
+
 == Scenarion 2: Configure Cluster Operator in a central fashion to Watch multiple Namespaces for Topic Creation
 
 ** Configs: https://strimzi.io/docs/master/#deploying-cluster-operator-kubernetes-to-watch-multiple-namespacesstr
@@ -128,3 +134,7 @@ Procedure
     On OpenShift this can be done using oc apply:
 
     oc apply -f install/cluster-operator -n my-project
+
+
+
+
