@@ -269,7 +269,7 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 === Run AMQ Streams Features demo
 
-* Follow link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/amq-streams-features-demo/README.md[Demo Instructions]
+* Follow link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/amq-streams-features-demo/README.adoc[Demo Instructions]
 
 
 
