@@ -30,11 +30,16 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-clusteroperator-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-useroperator-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-topicoperator-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-entityoperatorstunnel-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkamirrormaker:1.0.0
 ** strimzi/kafka-mirror-maker:latest
 * Ensure imagestreams are installed in *openshift* namespace
 ** clone https://github.com/openshift/library
 ** Run a script to install *official* imagestreams in *openshift* namespace such as this link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/scripts/install-official-is-imagestreams.sh[install-official-is-imagestreams.sh] as cluster admin
 ** To avoid minishift issues with registry authentication download 3.10 images:https://github.com/minishift/minishift/blob/master/addons/xpaas/v3.10/xpaas-streams/fis-image-streams.json also available at  link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/env/minishift-is.json[env/minishift-is.json]
+
+	oc create -f env/ -n openshift
+
 ** Image to be present in registry registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:2.0
 
 == AMQ Streams on OCP Components & Features
@@ -88,10 +93,21 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 
 == Additional Resources
 
+- KAFKA ENABLEMENT: OCP slides 6-9	https://github.com/scholzj/kafka-enablement.git  but with old images
+
+
 From  RHTE Tom and Jakub set up some material on GitHub like this one https://github.com/tombentley/rhte-2018 and https://github.com/scholzj/rhte-prague-2018
 
 Jakub should also have a repo with demo for the support internal training
 
 there is also this one from me for the RHOSD https://github.com/ppatierno/rh-osd-2018
+
+
+* Working with KAFKA outside of OCP
+
+Quickstart: https://kafka.apache.org/documentation/#quickstart
+Also slides 0-5	https://github.com/scholzj/kafka-enablement.git 
+
+
 
 

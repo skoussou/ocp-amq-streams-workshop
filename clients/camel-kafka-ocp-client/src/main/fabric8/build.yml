@@ -7,7 +7,6 @@ metadata:
     provider: fabric8
     version: 1.0.0-SNAPSHOT
   name: camel-kafka-demo-s2i
-  namespace: amq-streams-ephemeral
   resourceVersion: '117228'
   selfLink: >-
     /apis/build.openshift.io/v1/namespaces/amq-streams-ephemeral/buildconfigs/camel-kafka-demo-s2i

@@ -155,7 +155,9 @@ the examples we will use this method and hence we expose a single route of the s
 
 === Configure Topic
 
-    Now that KAFKA cluster is running, create a topic to publish and subscribe from external client. Create the following *my-topic* Topic custom resource definition with 3 replicas and 3 partitions in my-cluster Kafka cluster:
+Now that KAFKA cluster is running, create a topic to publish and subscribe from external client. Create the following *my-topic* Topic custom resource definition with 3 replicas and 3 partitions in my-cluster Kafka cluster:
+
+* Create it by adding *KafkaTopic* CRD entry
 
 echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	kind: KafkaTopic
@@ -170,7 +172,7 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	   retention.ms: 7200000
 	   segment.bytes: 1073741824' | oc create -f - -n amq-streams-ephemeral
 
-
+* Adding *ConfigMap* and *directly on zookeeper* 2 more option
 
 === Test 
 
@@ -209,7 +211,7 @@ $ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-boo
 
 	oc login -u HOST user:password
         cd clients/camel-kafka-ocp-client
-	oc create -f src/main/fabric8/build.yml
+	oc create -f src/main/fabric8/build.yml -n amq-streams-ephemeral
         mvn clean package
 	oc start-build camel-kafka-demo-s2i --from-file=target/camel-kafka-demo-1.0.0-SNAPSHOT.jar
 
@@ -217,6 +219,18 @@ $ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-boo
 
 	oc get pods
 	oc logs -f camel-kafka-demo-
+
+
+
+
+
+
+
+
+examples/templates/topic-operator/topic-template.yaml
+
+
+
 
 
 

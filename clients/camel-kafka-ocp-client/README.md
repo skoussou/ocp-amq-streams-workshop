@@ -8,7 +8,7 @@ The quickstart uses Spring Boot to configure a little application that includes 
 
 The example can be built with
 
-    mvn clean install
+    mvn clean package
 
 ### Running the example in OpenShift
 
@@ -18,7 +18,7 @@ It is assumed that:
 
 The example can be built and run on OpenShift using a single goal:
 
-    mvn fabric8:deploy
+    mvn fabric8:deploy 
 
 When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status
 
