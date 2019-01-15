@@ -87,7 +87,20 @@ OpenShift doesn't provide a single way to achieve this. What we can do is provid
 
 == Prometheus metrics
 
-AMQ Streams provides metrics exports for Prometheus. Users can plug it with their own Prometheus installation to monitor AMQ Streams. Prometheus is not included in this demo.
+AMQ Streams provides metrics exports for Prometheus. Users can plug it with their own Prometheus installation to monitor AMQ Streams. Prometheus inclusion in this demo is optional
+
+Because the Kafka cluster, which is going to be deployed, exposes metrics about the cluster itself (both Zookeeper and Kafka), a Prometheus and Grafana servers can be deployed for gathering these metrics and showing them.
+
+	oc apply -f 15-prometheus.yaml
+	oc apply -f 16-grafana.yaml
+
+The datasource configuration and Kafka and Zookeeper dashboards can be deployed running:
+
+	Note: modify the script for your cluster
+	./17-grafana.sh
+
+> Prometheus and Grafana aren't part of AMQ Streams. The above is just an example of a possible dashboard.
+
 
 == Accessing fast disks
 
