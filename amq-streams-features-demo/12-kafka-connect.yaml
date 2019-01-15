@@ -3,7 +3,7 @@ kind: KafkaConnectS2I
 metadata:
   name: my-connect-s2i
   labels:
-    app: tech-exchange-kafka-connect
+    app: amq-streams-demo-connect
 spec:
   replicas: 1
   bootstrapServers: my-cluster-kafka-bootstrap:9093

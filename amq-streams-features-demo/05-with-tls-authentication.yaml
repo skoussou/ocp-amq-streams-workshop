@@ -3,7 +3,7 @@ kind: Kafka
 metadata:
   name: my-cluster
   labels:
-    app: tech-exchange-kafka
+    app: amq-streams-demo
 spec:
   kafka:
     replicas: 1
