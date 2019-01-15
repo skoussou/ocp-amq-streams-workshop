@@ -157,7 +157,7 @@ the examples we will use this method and hence we expose a single route of the s
 
 Now that KAFKA cluster is running, create a topic to publish and subscribe from external client. Create the following *my-topic* Topic custom resource definition with 3 replicas and 3 partitions in my-cluster Kafka cluster:
 
-* Create it by adding *KafkaTopic* CRD entry
+* Create it by creating *KafkaTopic* CRD object
 
 echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	kind: KafkaTopic
@@ -172,32 +172,35 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	   retention.ms: 7200000
 	   segment.bytes: 1073741824' | oc create -f - -n amq-streams-ephemeral
 
-* Adding *ConfigMap* and *directly on zookeeper* 2 more option
+* Adding Topic via Template configuring Topic *ConfigMap* and *directly on zookeeper* 2 more option
+
+    • Create topic through Kafka
+oc exec my-cluster-kafka-1 -i -t -- bin/kafka-topics.sh --zookeeper my-cluster-zookeeper:2181 --create --topic created-in-kafka --partitions 3 --replication-factor 1 --config cleanup.policy=compact
+    • Create topic through Config Map
+oc apply -f demo-7/topic.yaml
+
+
 
 === Test 
 
 ==== Testing using an external application
 
-    Clone this git repo to test the access from to your new Kafka cluster:
+* Ensure a route exists to the OCP Service *my-cluster-kafka-brokers*. Otherwise expose via TLS the service (console or oc tools)
+* Go to client application https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/clients/kafka-remote-client[kafka-remote-client]
 
-$ git clone https://github.com/hguerrero/amq-examples.git
+	cd ./ocp-amq-streams-workshop/tree/master/clients/kafka-remote-client
 
-    Switch to the camel-kafka-demo folder
+* As we are using Routes for external access to the cluster, we need the CA certs to enable TLS in the client. Extract the public certificate of the broker certification authority
 
-$ cd amq-examples/camel-kafka-demo/
+	oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt --to=- > src/main/resources/ca.crt
 
-    As we are using Routes for external access to the cluster, we need the CA certs to enable TLS in the client. Extract the public certificate of the broker certification authority
+* Import the trusted cert to a keystore
 
-$ oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt --to=- > src/main/resources/ca.crt
+	keytool -import -trustcacerts -alias root -file src/main/resourcclients/camel-kafka-ocp-client/src/main/fabric8/build.ymles/ca.crt -keystore src/main/resources/keystore.jks -storepass password -noprompt
 
-    Import the trusted cert to a keystore
+* Now you can run the Fuse application using the maven command:
 
-$ keytool -import -trustcacerts -alias root -file src/main/resourcclients/camel-kafka-ocp-client/src/main/fabric8/build.ymles/ca.crt -keystore src/main/resources/keystore.jks -storepass password -noprompt
-
-    Now you can run the Fuse application using the maven command:
-
-$ mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'`:443" clean package spring-boot:run
-
+	mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'`:443" clean package spring-boot:run
 
 
 ==== Testing using an OCP microservice application
