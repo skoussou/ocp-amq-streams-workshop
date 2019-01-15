@@ -39,10 +39,6 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkainit-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-zookeeperstunnel-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkastunnel-openshift:1.0.0
-
-
-
-** strimzi/kafka-mirror-maker:latest
 * Ensure imagestreams are installed in *openshift* namespace
 ** clone https://github.com/openshift/library
 ** Run a script to install *official* imagestreams in *openshift* namespace such as this link:https://github.com/skoussou/ocp-amq-streams-workshop/blob/master/scripts/install-official-is-imagestreams.sh[install-official-is-imagestreams.sh] as cluster admin
@@ -101,22 +97,6 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 * link:README-amq-streams-ocp-workwithcluster.adoc[Self-Service Dev-Team Workshop Activities ]
 * link:README-amq-streams-ocp-advanced-install.adoc[Advanced Installation- Workshop Activities ]
 
-== Additional Resources
-
-- KAFKA ENABLEMENT: OCP slides 6-9	https://github.com/scholzj/kafka-enablement.git  but with old images
-
-
-From  RHTE Tom and Jakub set up some material on GitHub like this one https://github.com/tombentley/rhte-2018 and https://github.com/scholzj/rhte-prague-2018
-
-Jakub should also have a repo with demo for the support internal training
-
-there is also this one from me for the RHOSD https://github.com/ppatierno/rh-osd-2018
-
-
-* Working with KAFKA outside of OCP
-
-Quickstart: https://kafka.apache.org/documentation/#quickstart
-Also slides 0-5	https://github.com/scholzj/kafka-enablement.git 
 
 
 

@@ -6,7 +6,7 @@ The cluster operator is the most important component in AMQ Streams on OpenShift
 It follows the usual Operator pattern of watching for changes on some desired resource and making changes in other resources to make them match the desired state.
 It can be deployed like this:
 
-    oc apply -f 01-install-cluster-operator/
+    oc apply -f install_and_examples_0/install/cluster-operator/ -n amq-streams-demo
 
 In the case of the Cluster Operator, the desired resource represents a Kafka cluster.
 This is stored as a Custom Resource within OpenShift.
@@ -17,6 +17,7 @@ So the Custom Resource also allows us to configure the Zookeeper cluster require
 
 Let's start off with the simplest possible Kafka cluster:
 
+    cd amq-streams-features-demo
     cat 02-simplest-cluster.yaml
     oc apply -f 02-simplest-cluster.yaml
 
