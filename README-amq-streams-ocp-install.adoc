@@ -3,34 +3,31 @@ Steps to install AMQ Streams 1.x on OCP 3.9+
 :toc:
 
 
-Considerations: * So if you have a centralized cluster operator, ????
+== Ephemeral AMQ Streams Installation
+=== Setup Resources for Ephemeral AMQ Streams Installation
 
-== Ephemeral AQM Streams Installation
-=== Setup Resources for Ephemeral AQM Streams Installation
-
-* Step 1: Create a new Namespece
+* *Step 1:* Create a new Namespece
 
 	oc new-project amq-streams-ephemeral
 	oc login -u system:admin
 
-* Step 2: Get the latest version of AMQ Streams CRDs
+* *Step 2:* Get the latest version of AMQ Streams CRDs
 ** Either Download the latest CRDs link:https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams[AMQ Streams ]
 ** *[Selected]* The availble CRDs from this repository link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[install_and_examples_0]
 
-* Step 3: Install the CRD (CustomResourceDefinition) objects for AMQ Streams
+* *Step 3:* Install the CRD (CustomResourceDefinition) objects for AMQ Streams
 
-	cd install_and_examples_0
-	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install/cluster-operator/*RoleBinding*.yaml
-	oc apply -f install/cluster-operator/
+	sed -i 's/namespace: .*/namespace: amq-streams-ephemeral/' install_and_examples_0/install/cluster-operator/*RoleBinding*.yaml
+	oc apply -f install_and_examples_0/install/cluster-operator/
 
 ** See here: link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-list-of-kafka-cluster-resources-deployment-configuration-kafka[List of resources created as part of Kafka cluster] in the namespace
 
 
 === Install AMQ Streams
 
-* Step 1: Install *KAFKA* object
+* *Step 1:* Install *KAFKA* object
 	cd install_and_examples_0
-	oc create -f examples/kafka/kafka-ephemeral.yaml
+	oc create -f examples/kafka/kafka-ephemeral.yaml -n amq-streams-ephemeral
 
 ** The *OCP Operators* monitors for certain objects and takes action 
 
@@ -123,7 +120,7 @@ Considerations: * So if you have a centralized cluster operator, ????
 	my-cluster-kafka-config                   1         39m
 	my-cluster-zookeeper-config               1         41m
 
-* Step 2: Expose KAFKA bootstrap servers to external, to OCP, clients
+* *Step 2:* Expose KAFKA bootstrap servers to external, to OCP, clients
 ** Note the difference between KAFKA properties *brokers.list* and *bootstrap.serers* (see link:https://jaceklaskowski.gitbooks.io/apache-kafka/kafka-properties-bootstrap-servers.html[description here] is that the latter although can be a list of hosts:port a single one can be provided and the others will be discovered. In 
 the examples we will use this method and hence we expose a single route of the service
 
@@ -178,6 +175,19 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 === Test 
 
+==== Check created resources
+
+	$ oc get KafkaTopic
+	NAME                  AGE
+	my-topic              4h
+	my-topic-1-template   2h
+	my-topic-2-in-kafka   3h
+
+	$ oc get Kafka
+	NAME         AGE
+	my-cluster   5h
+
+
 ==== Testing using an external application
 
 * Ensure a route exists to the OCP Service *my-cluster-kafka-brokers*. Otherwise expose via TLS the service (console or oc tools)
@@ -200,12 +210,12 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 ==== Testing using an OCP microservice application
 
-* Step 1: Ensure the pre-reqs have been fullfilled and image *registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:2.0* is in *openshift* namespace
-* Step 2: Ensure cluster exists and 
+* *Step 1:* Ensure the pre-reqs have been fullfilled and image *registry.access.redhat.com/jboss-fuse-6/fis-java-openshift:2.0* is in *openshift* namespace
+* *Step 2:* Ensure cluster exists and 
 ** *my-topic* configured
 ** name of cluster is *my-cluster*
 ** service *my-cluster-kafka-bootstrap.amq-streams-ephemeral.svc* (exposing 9092) exists
-* Step 3: install binary build
+* *Step 3:* install binary build
 
 	oc login -u HOST user:password
         cd clients/camel-kafka-ocp-client
@@ -215,7 +225,7 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 	oc start-build camel-kafka-demo-s2i --from-file=target/camel-kafka-demo-1.0.0-SNAPSHOT.jar
 	oc new-app camel-kafka-demo
 
-* Step 4: 
+* *Step 4:* 
 
 	oc get pods
 	oc logs -f camel-kafka-demo-
@@ -225,9 +235,46 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 
 
+== AMQ Streams Further Features
+=== Setup Resources for Ephemeral AQM Streams Installation
+
+* *Step 1:* Create a new Namespece
+
+	oc new-project amq-streams-demo --display-name="AMQ Streams Full Set of Features Demo" --description="Demonstrates more complete list of AMQ Streams features"
+	oc login -u system:admin
+
+* *Step 2:* Get the latest version of AMQ Streams CRDs
+** Either Download the latest CRDs link:https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams[AMQ Streams ]
+** *[Selected]* The availble CRDs from this repository link:https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/install_and_examples_0[install_and_examples_0]
+
+* *Step 3:* Install the CRD (CustomResourceDefinition) objects for AMQ Streams
+
+        cd install_and_examples_0/
+	grep -r amq-streams-ephemeral (modify all files that yield result to *namespace: amq-streams-demo*)
+	sed -i 's/namespace: .*/namespace: amq-streams-demo/' install_and_examples_0/install/cluster-operator/*RoleBinding*.yaml
+	oc apply -f install_and_examples_0/install/cluster-operator/ -n amq-streams-demo
+
+** See here: link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-list-of-kafka-cluster-resources-deployment-configuration-kafka[List of resources created as part of Kafka cluster] in the namespace
 
 
-examples/templates/topic-operator/topic-template.yaml
+=== Install AMQ Streams
+
+* *Step 1:* Install *KAFKA* object
+	cd install_and_examples_0
+	oc create -f examples/kafka/kafka-ephemeral.yaml -n amq-streams-ephemeral
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

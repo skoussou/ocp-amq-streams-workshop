@@ -32,6 +32,16 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-topicoperator-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-entityoperatorstunnel-openshift:1.0.0
 ** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkamirrormaker:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-zookeeper-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafka-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkaconnect-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkaconnects2i-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkainit-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-zookeeperstunnel-openshift:1.0.0
+** registry.access.redhat.com/amqstreams-1/amqstreams10-kafkastunnel-openshift:1.0.0
+
+
+
 ** strimzi/kafka-mirror-maker:latest
 * Ensure imagestreams are installed in *openshift* namespace
 ** clone https://github.com/openshift/library
