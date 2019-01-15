@@ -61,7 +61,7 @@ All the rest of the configs can be specified by the user. For example:
 
 ## Configuring Authentication and Authorization
 
-I've already mentioned that TLS is used for encryption within and between the Zookeeper and Kafka clusters. TLS can also be used for clients, both to provide encrypted communication and also for authentication. It's worth pointing out that this is mutual TLS authentication. So the identity of the client can be established on the broker using its TLS certificate, as well as the more common case where the client authenticate the server.
+As already mentioned *TLS* is used for encryption within and between the Zookeeper and Kafka clusters. TLS can also be used for clients, both to provide encrypted communication and also for authentication. It's worth pointing out that this is mutual TLS authentication. So the identity of the client can be established on the broker using its TLS certificate, as well as the more common case where the client authenticate the server.
 
 This happens in two parts.
 
