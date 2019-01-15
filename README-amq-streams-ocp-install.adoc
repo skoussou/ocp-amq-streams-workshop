@@ -209,9 +209,11 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 	oc login -u HOST user:password
         cd clients/camel-kafka-ocp-client
+        oc create -f src/main/fabric8/imageStream.yml  -n amq-streams-ephemeral
 	oc create -f src/main/fabric8/build.yml -n amq-streams-ephemeral
         mvn clean package
 	oc start-build camel-kafka-demo-s2i --from-file=target/camel-kafka-demo-1.0.0-SNAPSHOT.jar
+	oc new-app camel-kafka-demo
 
 * Step 4: 
 
