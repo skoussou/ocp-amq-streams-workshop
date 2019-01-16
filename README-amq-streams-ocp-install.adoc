@@ -190,6 +190,9 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 ==== Testing using an external application
 
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#configuring-external-clients-to-trust-cluster-ca-str[Configuring external clients to trust the cluster CA]
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-kafka-authentication-and-authorization-deployment-configuration-kafka[Authentication & Authorization]
+
 * Ensure a route exists to the OCP Service *my-cluster-kafka-brokers*. Otherwise expose via TLS the service (console or oc tools)
 * Go to client application https://github.com/skoussou/ocp-amq-streams-workshop/tree/master/clients/kafka-remote-client[kafka-remote-client]
 

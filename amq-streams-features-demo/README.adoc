@@ -110,7 +110,7 @@ AMQ Stream on OpenShift supports this in exactly the same way that OpenShift its
 
 Pod affinity does not guarantee that other I/O hungry workloads aren't going to get scheduled to the same nodes. If we know what those other workloads are, we can use pod antiaffinity to try to avoid our broker pods getting scheduled to nodes where those other workloads are already running.
 
-**Because the demo is on a developer laptop, it's not possible to show this.**
+* This is left as a possible *TODO* as it requires a lot of workload to produce meaningful results. For the possible settings link:https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/pod_affinity.html[read this documentation]
 
 == Dedicating nodes to Kafka
 
@@ -118,9 +118,8 @@ Sometimes node affinity and pod anitaffinity are not enough. The operator suppor
 
 Briefly the idea is that you select certain nodes and mark those with a taint. Normal workloads won't to scheduled to run on those nodes unless they declare that they can work on nodes with that taint. That declaration takes the form of a toleration.
 
-**This functionality only works when nodes can be tainted.**
+**This functionality only works when nodes can be tainted. For more link:https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/taints_tolerations.html[read docs]**
 
-**Because the demo is on a developer laptop, it's not possible to show this.**
 
 == Rack awareness
 
@@ -132,7 +131,13 @@ In OpenShift there isn't a physical rack to worry about, but nodes can still hav
 
 AMQ Streams on OpenShift supports rack-aware scheduling to avoid this kind of problem.
 
-**Because the demo is on a developer laptop, it's not possible to show this.**
+See:
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-kafka-rack-deployment-configuration-kafka[Kafka rack awareness]
+* link:Cluster Operator Configuration[STRIMZI_DEFAULT_KAFKA_INIT_IMAGE]
+	Optional, default strimzi/kafka-init:latest. The image name to use as default for the init container started before the broker for initial configuration work (that is, rack support), if no image is specified as the kafka-init-image in the Container images.
+
+
+
 
 == Scaling up Kafka
 
@@ -147,19 +152,18 @@ Having made changes which require containers to be started or restarted we can w
 
 == Adding the Entity Operator
 
-Having set up a Kafka cluster we are ultimately going to want to use it to send and receive messages.
-Before we can get there we are going to need to create a user within Kafka so our application can authenticate itself to the brokers.
+* Having set up a Kafka cluster we are ultimately going to want to use it to send and receive messages.
+* Before we can get there we are going to *need to create a user* within Kafka so our application can authenticate itself to the brokers.
 
 AMQ Streams on OpenShift provides some other operators to make doing this simpler, and more OpenShift-esque.
-
-The Topic Operator provides bidirectional synchronization between topics within Kafka and custom resources in OpenShift. 
-
-The User Operator provides synchronization between a `KafkaUser` custom resource in OpenShift and Kafka's own user and Access Control List data structures. 
+* The *Topic Operator* provides bidirectional synchronization between topics within Kafka and custom resources in OpenShift. 
+* The *User Operator* provides synchronization between a `KafkaUser` custom resource in OpenShift and Kafka's own user and Access Control List data structures. 
 
 Together these operators allow the user to provision the topics and user accounts their application needs at the same time, and in the same way as the application itself: As OpenShift resources.
 
 The Cluster Operator deploys these operators according to the configuration:
 
+    cat 07-with-eo.yaml
     oc apply -f 07-with-eo.yaml
 
 The benefits here are:
@@ -172,10 +176,12 @@ The benefits here are:
 
 For this demo I'm going to need a single topic, which I create like this:
 
+    cat 08-my-topic.yaml
     oc apply -f 08-my-topic.yaml
 
 I'm also going to need a single user, which I create like this:
 
+    cat 09-my-user.yaml
     oc apply -f 09-my-user.yaml
 
 For TLS authentication, the User Operator will create an X509 certificate for that user and sign it using an internal client Certificate Authority.
@@ -193,10 +199,12 @@ With that in place we can create the applications
 
 Deploy the user for Kafka Connect.
 
+    cat 11-my-connect.yaml
     oc apply -f 11-my-connect.yaml
 
 And deploy Kafka Connect.
 
+    cat 12-kafka-connect.yaml
     oc apply -f 12-kafka-connect.yaml
 
 == Adding Kafka Connect connectors
@@ -207,8 +215,9 @@ Any additional connectors can be added to Kafka Connect using S2I.
 
 And deploy the connector.
 
-    ./14-connector.yaml
+    cat 14-connector.sh
+    ./14-connector.sh
 
 Check the Kafka Connect logs to see the messages arriving.
 
-    oc logs $(oc get pod -l app=tech-exchange-kafka-connect -o=jsonpath='{.items[0].metadata.name}') -f
+    oc logs $(oc get pod -l app=amq-streams-demo-connect -o=jsonpath='{.items[0].metadata.name}') -f

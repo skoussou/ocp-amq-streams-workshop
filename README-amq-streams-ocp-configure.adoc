@@ -137,4 +137,9 @@ Procedure
 
 
 
+== Scenario : Configure Strimzi Security
 
+=== Resources
+* https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-configuring-kafka-broker-listeners-deployment-configuration-kafka[Configure Broker Listeners]
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#assembly-kafka-authentication-and-authorization-deployment-configuration-kafka[Authentication & Authorization]
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/#ref-kafka-user-using-uo[KafkaUser Resource for Authentication & Authorization]
