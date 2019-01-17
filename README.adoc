@@ -90,6 +90,30 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 
 	minishift start
 
+==== Troubleshooting with minishift
+
+* sudoer for docker service
+
+	sudo groupadd docker
+	usermod -aG docker $USER
+
+* Issue with redhat.io registry authentication
+
+	TBD
+
+* Issue with profile for workshop
+
+	See kvm machines
+	sudo virsh list --all
+	-----------------------------
+	 Id   Name                   State     
+	---------------------------------------
+	 18   amq-streams-workshop   running   
+	 -    minishift              shut off 	
+
+	sudo virsh undefine 9b81c33f-739e-40ba-a0bc-b84389bf5fa7
+	
+
 == Workshop Activities
 
 * link:README-amq-streams-ocp-install.adoc[Installation Workshop Activities]
