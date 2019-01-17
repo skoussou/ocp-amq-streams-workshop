@@ -210,6 +210,8 @@ echo 'apiVersion: kafka.strimzi.io/v1alpha1
 
 	mvn -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'`:443" clean package spring-boot:run
 
+	or if not able to run springboo-app
+	java -jar -Drun.jvmArguments="-Dbootstrap.server=`oc get routes my-cluster-kafka-bootstrap -o=jsonpath='{.status.ingress[0].host}{"\n"}'\`:443 -Dsecurity.protocol=SSL -Dssl.truststore.location='../src/main/resources/keystore.jks' -Dssl.truststore.password='password'"
 
 ==== Testing using an OCP microservice application
 
