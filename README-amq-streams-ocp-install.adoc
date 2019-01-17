@@ -26,6 +26,7 @@ Steps to install AMQ Streams 1.x on OCP 3.9+
 === Install AMQ Streams
 
 * *Step 1:* Install *KAFKA* object
+	
 	cd install_and_examples_0
 	oc create -f install_and_examples_0/examples/kafka/kafka-ephemeral-external.yaml -n amq-streams-ephemeral
 
