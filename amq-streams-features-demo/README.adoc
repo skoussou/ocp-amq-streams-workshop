@@ -195,6 +195,36 @@ With that in place we can create the applications
     oc logs $(oc get pods -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep hello-world-producer)
     oc logs -f $(oc get pods -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | grep hello-world-consumer)
 
+
+== Testing Resilience
+
+* Scale consumer down to 0 replicas
+
+	oc scale deployment hello-world-consumer --replicas=0 -n amq-streams-demo
+
+* Check the PVCs assined due to Openshift StatefulSets to each pod
+
+	oc get pvc -n amq-streams-demo
+
+* After awhile we scale down the KAFKA nodes to 0 replicas
+
+	oc scale statefulset my-cluster-kafka --replicas=0 -n amq-streams-demo
+
+* Scale producer down to 0 replicas
+
+	oc scale deployment hello-world-producer --replicas=0 -n amq-streams-demo
+
+* Scale up  the KAFKA nodes to 2 replicas
+
+	oc scale statefulset my-cluster-kafka --replicas=0
+
+* Scale up ONLY the consumer
+
+	oc scale deployment hello-world-consumer --replicas=0 -n amq-streams-demo
+
+* messages not read will be processed
+
+
 == Kafka Connect
 
 Deploy the user for Kafka Connect.
@@ -206,6 +236,22 @@ And deploy Kafka Connect.
 
     cat 12-kafka-connect.yaml
     oc apply -f 12-kafka-connect.yaml
+
+	
+Check state
+
+    $ oc get kt 
+	NAME       AGE
+	my-topic   41m
+    $ oc get kt my-topic 
+	kafkatopic "my-topic" deleted
+    $ oc get KafkaConnectS2I
+	NAME             AGE
+	my-connect-s2i   58m
+    $ oc get kcs2i
+	NAME             AGE
+	my-connect-s2i   59m
+
 
 == Adding Kafka Connect connectors
 
@@ -221,3 +267,9 @@ And deploy the connector.
 Check the Kafka Connect logs to see the messages arriving.
 
     oc logs $(oc get pod -l app=amq-streams-demo-connect -o=jsonpath='{.items[0].metadata.name}') -f
+
+
+
+
+
+
