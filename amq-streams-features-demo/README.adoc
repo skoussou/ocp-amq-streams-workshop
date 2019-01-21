@@ -206,21 +206,21 @@ With that in place we can create the applications
 
 	oc get pvc -n amq-streams-demo
 
-* After awhile we scale down the KAFKA nodes to 0 replicas
-
-	oc scale statefulset my-cluster-kafka --replicas=0 -n amq-streams-demo
-
 * Scale producer down to 0 replicas
 
 	oc scale deployment hello-world-producer --replicas=0 -n amq-streams-demo
 
+* After awhile we scale down the KAFKA nodes to 0 replicas
+
+	oc scale statefulset my-cluster-kafka --replicas=0 -n amq-streams-demo
+
 * Scale up  the KAFKA nodes to 2 replicas
 
-	oc scale statefulset my-cluster-kafka --replicas=0
+	oc scale statefulset my-cluster-kafka --replicas=2
 
 * Scale up ONLY the consumer
 
-	oc scale deployment hello-world-consumer --replicas=0 -n amq-streams-demo
+	oc scale deployment hello-world-consumer --replicas=1 -n amq-streams-demo
 
 * messages not read will be processed
 
