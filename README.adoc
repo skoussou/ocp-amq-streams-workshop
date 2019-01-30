@@ -111,8 +111,17 @@ Steps to setup AMQ Streams 1.x on OCP 3.9+  and run some examples
 	 18   amq-streams-workshop   running   
 	 -    minishift              shut off 	
 
+** shutdown (if minishift hasn't shutdown virtual machine properly)
+
+	sudo virsh shutdown amq-streams-workshop
+ 
+
+** Undefine 
+
 	sudo virsh undefine 9b81c33f-739e-40ba-a0bc-b84389bf5fa7
-	
+
+
+		
 
 == Workshop Activities
 
