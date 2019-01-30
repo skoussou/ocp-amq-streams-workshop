@@ -6,7 +6,7 @@ metadata:
     app: amq-streams-demo
 spec:
   kafka:
-    replicas: 3
+    replicas: 2
     listeners:
       tls:
         authentication: 
@@ -21,19 +21,55 @@ spec:
       log.roll.hours: 24
       # keep log segments 4 days
       log.retention.hours: 94
-    jvmOptions:
-      -Xmx: 1G
-    resources:
-      limits:
-        memory: 3Gi
-      requests:
-        memory: 3Gi
+    metrics:
+      lowercaseOutputLabelNames: true
+      lowercaseOutputName: true
+      rules:
+      - name: kafka_server_replicamanager_$1
+        pattern: kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
+      - name: kafka_controller_kafkacontroller_$1
+        pattern: kafka.controller<type=KafkaController, name=(.+)><>Value
+      - name: kafka_server_brokertopicmetrics_$1
+        pattern: kafka.server<type=BrokerTopicMetrics, name=(.+)><>OneMinuteRate
+      - name: kafka_network_requestmetrics_requestspersec_$1
+        pattern: kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
+      - name: kafka_network_socketserver_networkprocessoravgidlepercent
+        pattern: kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
+      - name: kafka_server_replicafetchermanager_maxlag_$1
+        pattern: kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
+      - name: kafka_kafkarequesthandlerpool_requesthandleravgidlepercent
+        pattern: kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+      - name: kafka_controller_controllerstats_$1
+        pattern: kafka.controller<type=ControllerStats, name=(.+)><>OneMinuteRate
+      - name: kafka_server_sessionexpirelistener_$1
+        pattern: kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
   zookeeper:
     replicas: 1
     storage:
       type: persistent-claim
       size: 1Gi
+    metrics:
+      lowercaseOutputLabelNames: true
+      lowercaseOutputName: true
+      rules:
+      - name: zookeeper_$2
+        pattern: org.apache.ZooKeeperService<name0=ReplicatedServer_id(\d+)><>(\w+)
+      - labels:
+          replicaId: $2
+        name: zookeeper_$3
+        pattern: org.apache.ZooKeeperService<name0=ReplicatedServer_id(\d+), name1=replica.(\d+)><>(\w+)
+      - labels:
+          memberType: $3
+          replicaId: $2
+        name: zookeeper_$4
+        pattern: org.apache.ZooKeeperService<name0=ReplicatedServer_id(\d+), name1=replica.(\d+),
+          name2=(\w+)><>(\w+)
+      - labels:
+          memberType: $3
+          replicaId: $2
+        name: zookeeper_$4_$5
+        pattern: org.apache.ZooKeeperService<name0=ReplicatedServer_id(\d+), name1=replica.(\d+),
+          name2=(\w+), name3=(\w+)><>(\
   entityOperator:
     topicOperator: {}
     userOperator: {}
-
