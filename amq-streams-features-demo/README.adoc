@@ -7,6 +7,8 @@ It follows the usual Operator pattern of watching for changes on some desired re
 It can be deployed like this:
 
     oc apply -f install_and_examples_0/install/cluster-operator/ -n amq-streams-demo
+         or
+    oc apply -f https://raw.githubusercontent.com/skoussou/ocp-amq-streams-workshop/master/install_and_examples_0/install/cluster-operator/ -n amq-streams-demo
 
 In the case of the Cluster Operator, the desired resource represents a Kafka cluster.
 This is stored as a Custom Resource within OpenShift.
